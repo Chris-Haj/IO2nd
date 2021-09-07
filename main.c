@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
 
 struct Hash{
     char letter;
+//    char bletter;
     int count;
 }Stats[26];
 
@@ -16,14 +19,22 @@ int main(){
 
     FILE *f=NULL;
     char *location = "\\Users\\chris\\Desktop\\random.txt";
+    char *rec = (char *) calloc(50, sizeof(char));
+    strncpy(rec,location,27);
+    strcat(rec,"Modded.txt");
     f = fopen(location,"a+");
     if(f!=NULL){
         intialize();
         countletters(f);
-        printStats(f);
+        fclose(f);
+        f=NULL;
     }
     else{
         printf("Rip");
+    }
+    f = fopen(rec,"w+");
+    if(f!=NULL){
+        printStats(f);
     }
     fclose(f);
     f=NULL;
@@ -54,11 +65,11 @@ void countletters(FILE *f){
 void printStats(FILE *f){
     if(f!=NULL){
         bool space = false;
-        fprintf(f,"\n");
+//        fprintf(f,"\n");
         for(int i=0;i<26;i++){
             fprintf(f,"Count of letter %c is %d\n",Stats[i].letter,Stats[i].count);
             if(space == false)
-                fprintf(f,"\t");
+                fprintf(f,"                                                      ");
             else
                 fprintf(f,"\n");
             space = !space;
